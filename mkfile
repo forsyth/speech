@@ -1,16 +1,16 @@
 SHELL=/bin/rc
 all:V:
-	go build .
+	go build ./...
 
 fmt:V:
-	go fmt .
+	go fmt /...
 
 test:V:
 	. ./secrets.rc
-	go test -v .
+	go test -v ./polly
 
 testcov:V:
-	go test -v -coverprofile=c.out .
+	go test -v -coverprofile=c.out ./...
 
 vet:V:
 	go vet .
