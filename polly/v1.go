@@ -37,6 +37,9 @@ func NewPollyV1(creds *speech.Credentials, region string, format string, sampler
 	if err != nil {
 		return nil, err
 	}
+	if format == "ogg" || format == "oggvorbis" {
+		format = "ogg_vorbis"
+	}
 	speech := &SpeakerV1{
 		creds: creds,
 		region: region,

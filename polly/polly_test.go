@@ -8,23 +8,21 @@ import (
 	"github.com/forsyth/speech"
 )
 
-func getenv(name string) string {
+func getenv(t *testing.T, name string) string {
 	s := os.Getenv(name)
 	if s == "" {
-		return "$" + name
+		t.Fatalf("need value for environment variable %s", name)
 	}
 	return s
 }
 
 func TestSpeech(t *testing.T) {
 	creds := &speech.Credentials{
-		ClientID: getenv("SPEECH_ID"),
-		Keys:     []string{getenv("SPEECH_KEY")},
+		ClientID: getenv(t, "SPEECH_ID"),
+		Keys:     []string{getenv(t, "SPEECH_KEY")},
 	}
-	region := getenv("SPEECH_REGION")
-t.Logf("SPEECH_REGION: %q\n", region)
-t.Logf("SPEECH_ID: %q SPEECH_KEY: %q\n", creds.ClientID, creds.Keys)
-	formats := []string{ "pcm", "mp3", "ogg_vorbis" }
+	region := getenv(t, "SPEECH_REGION")
+	formats := []string{ "pcm", "mp3", "ogg" }
 	type aPolly struct {
 		name string
 		mk	func(*speech.Credentials, string, string, int) (speech.Speaker, error)
