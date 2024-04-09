@@ -4,6 +4,17 @@ import (
 	"strings"
 )
 
+// oggly normalises the name of ogg vorbis format for Polly.
+// Other formats are left as-is, and if incorrect, will get an AWS diagnostic.
+func oggly(format string) string {
+	switch format {
+	case "ogg", "oggvorbis", "ogg-vorbis":
+		return "ogg_vorbis"
+	default:
+		return format
+	}
+}
+
 func def(x string) *string {
 	if x != "" {
 		return &x
@@ -11,8 +22,8 @@ func def(x string) *string {
 	return nil
 }
 
-// to_ssml converts text to SSML (AWS version), replacing reserved characters by XML entities.
-func to_ssml(text, rate string) string {
+// toSSML converts text to SSML (AWS version), replacing reserved characters by XML entities.
+func toSSML(text, rate string) string {
 	sb := &strings.Builder{}
 	sb.WriteString("<speak><amazon:auto-breaths>")
 	sb.WriteString("<prosody rate=\"" + rate + "\">")

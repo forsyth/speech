@@ -30,11 +30,8 @@ func NewPollyV2(creds *speech.Credentials, region string, format string, sampleR
 	if creds.ClientID == "" || len(creds.Keys) < 1 || creds.Keys[0] == "" {
 		return nil, errors.New("missing id or key in credential")
 	}
-	if format == "ogg" || format == "oggvorbis" {
-		format = "ogg_vorbis"
-	}
 	var sv types.OutputFormat
-	form, err := cvtString("output format", format, sv.Values())
+	form, err := cvtString("output format", oggly(format), sv.Values())
 	if err != nil {
 		return nil, fmt.Errorf("unsupported format: %s", format)
 	}
@@ -71,7 +68,7 @@ func (s *PollySpeakerV2) Speak(text, speakingRate, locale, voice string) (*speec
 	input := &polly.SynthesizeSpeechInput{
 		OutputFormat: s.format,
 		SampleRate:   aws.String(s.sampling), // mp3, ogg_vorbis: 8000, 16000, 22050; pcm: 8000, 16000
-		Text:         aws.String(to_ssml(text, speakingRate)),
+		Text:         aws.String(toSSML(text, speakingRate)),
 		TextType:     types.TextTypeSsml,
 		VoiceId:      vID,
 		LanguageCode: loc, // defaults to default locale for given voice
@@ -91,6 +88,7 @@ func (s *PollySpeakerV2) Speak(text, speakingRate, locale, voice string) (*speec
 }
 
 // DecodeErrorV2 returns the code, message and fault suggestion from an AWS error; it reverts to "general" and err.Error() if it is not an AWS error.
+// In practice, at least for Polly, the break-down is rarely more informative than the plain Error() text.
 func DecodeErrorV2(err error) (code string, msg string, fault string) {
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
