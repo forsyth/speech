@@ -1,3 +1,8 @@
+// Package speech provides an interface, Speaker, that allows an application to
+// access the basic function of a text-to-speech service, hiding the underlying
+// provider, allowing migration (eg, from Bing to Polly).
+// Call the provider-specific New function (eg, polly.NewPollyV1, polly.NewPollyV2)
+// and assign the result to a Speaker variable.
 package speech
 
 import (
