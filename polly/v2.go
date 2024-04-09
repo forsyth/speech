@@ -90,7 +90,7 @@ func (s *PollySpeakerV2) Speak(text, speakingRate, locale, voice string) (*speec
 	return spoken, nil
 }
 
-// DecodeError returns the code, message and fault suggestion from an AWS error; it reverts to "general" and err.Error() if it is not an AWS error.
+// DecodeErrorV2 returns the code, message and fault suggestion from an AWS error; it reverts to "general" and err.Error() if it is not an AWS error.
 func DecodeErrorV2(err error) (code string, msg string, fault string) {
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
