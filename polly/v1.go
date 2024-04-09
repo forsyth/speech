@@ -25,7 +25,7 @@ type SpeakerV1 struct {
 
 // NewPollyV1 creates a Speaker session with default credentials, region and format,
 // for AWS API v1.
-func NewPollyV1(creds *speech.Credentials, region string, format string, samplerate int) (*SpeakerV1, error) {
+func NewPollyV1(creds *speech.Credentials, region string, format string, sampleRate int) (*SpeakerV1, error) {
 	if creds.ClientID == "" || len(creds.Keys) < 1 || creds.Keys[0] == "" {
 		return nil, errors.New("missing id or key in credential")
 	}
@@ -38,11 +38,11 @@ func NewPollyV1(creds *speech.Credentials, region string, format string, sampler
 		return nil, err
 	}
 	speech := &SpeakerV1{
-		creds: creds,
-		region: region,
-		session: sesh,
-		format: oggly(format),
-		sampling: fmt.Sprint(samplerate),
+		creds:    creds,
+		region:   region,
+		session:  sesh,
+		format:   oggly(format),
+		sampling: fmt.Sprint(sampleRate),
 	}
 	return speech, nil
 }
@@ -66,9 +66,9 @@ func (s *SpeakerV1) Speak(text, rate, locale, voice string) (*speech.Spoken, err
 		return nil, err
 	}
 	spoken := &speech.Spoken{
-		Audio: result.AudioStream,
+		Audio:   result.AudioStream,
 		TextLen: int(*result.RequestCharacters),
-		Format: *input.OutputFormat,
+		Format:  *input.OutputFormat,
 	}
 	return spoken, nil
 }

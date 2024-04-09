@@ -22,19 +22,19 @@ func TestSpeech(t *testing.T) {
 		Keys:     []string{getenv(t, "SPEECH_KEY")},
 	}
 	region := getenv(t, "SPEECH_REGION")
-	formats := []string{ "pcm", "mp3", "ogg" }
+	formats := []string{"pcm", "mp3", "ogg"}
 	type aPolly struct {
 		name string
-		mk	func(*speech.Credentials, string, string, int) (speech.Speaker, error)
+		mk   func(*speech.Credentials, string, string, int) (speech.Speaker, error)
 	}
-	pollys := []aPolly {
-		aPolly{ "polly v1", func(cred *speech.Credentials, r string, f string, s int) (speech.Speaker, error) {
-				return NewPollyV1(cred, r, f, s)
-			},
+	pollys := []aPolly{
+		aPolly{"polly v1", func(cred *speech.Credentials, r string, f string, s int) (speech.Speaker, error) {
+			return NewPollyV1(cred, r, f, s)
 		},
-		aPolly{ "polly v2", func(cred *speech.Credentials, r string, f string, s int) (speech.Speaker, error) {
-				return NewPollyV2(cred, r, f, s)
-			},
+		},
+		aPolly{"polly v2", func(cred *speech.Credentials, r string, f string, s int) (speech.Speaker, error) {
+			return NewPollyV2(cred, r, f, s)
+		},
 		},
 	}
 	for _, p := range pollys {
